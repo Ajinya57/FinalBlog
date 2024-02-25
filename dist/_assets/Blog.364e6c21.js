@@ -1,0 +1,1 @@
+var e={name:"Blog",data:()=>({users:[]}),created(){this.axios.get("/api/axios.php").then((e=>{this.users=e.data,console.log(this.users)}))}};e.render=function(e,s,a,t,r,n){return null};export{e as default};
