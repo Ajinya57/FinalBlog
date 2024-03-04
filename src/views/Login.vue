@@ -123,6 +123,9 @@ const login = () => {
 	// 这里的user对象应该是你的登录逻辑返回的用户信息
 	const user = {
 		name: "admin",
+		isRoot: true,
+		mail: "",
+		password: "",
 	};
 	store.dispatch("setUser", user);
 	router.push("/home");

@@ -57,7 +57,7 @@
 					</ul>
 					<ul>
 						<li v-if="user">
-							<span
+							<span v-if="user.isRoot"
 								>Power by
 								<router-link :to="{ path: '/login' }">
 									<a
@@ -68,6 +68,7 @@
 									>
 								</router-link>
 							</span>
+							<span v-else>Power by {{ user.name }} </span>
 						</li>
 						<li v-else>
 							<span
@@ -99,21 +100,28 @@
 	<div class="milk-body">
 		<div class="desktop-content">
 			<ul>
-				<li>
+				<li v-for="blog in blogs">
 					<ul class="breadcrumbs" id="post-source">
 						<li>
 							<a href="#"><i class="fa fa-file-text"></i></a>
 						</li>
-
-						<li><a href="#">NeuralNetwork</a></li>
-
-						<li><a href="#">yolo</a></li>
+						<!-- category -->
+						<li>
+							<a href="#">{{ blog.category }}</a>
+						</li>
+						<!-- tag -->
+						<li>
+							<a href="#">{{ blog.tag }}</a>
+						</li>
 
 						<li id="post-title">
-							<a
-								href="/2021/06/05/NeuralNetwork/yolo/yolov5train/"
-								title="yolov5使用自定义数据训练模型"
-								>yolov5使用自定义数...</a
+							<!-- blog title -->
+							<router-link
+								:to="{ name: 'blog', params: { id: blog.id } }"
+								:title="blog.title"
+								>{{
+									truncateTitle(blog.title, 12)
+								}}</router-link
 							>
 						</li>
 					</ul>
@@ -123,11 +131,11 @@
 							<tr>
 								<th></th>
 								<th>
+									<!-- blog title and time -->
 									<span class="table-title"
-										>File:
-										yolov5使用自定义数据训练模型</span
-									>
-									<span>2021-06-05</span>
+										>File: {{ blog.title }}
+									</span>
+									<span>{{ blog.date }}</span>
 								</th>
 							</tr>
 							<tr>
@@ -135,6 +143,7 @@
 									content
 								</td>
 								<td>
+									<!-- if has abstract, show here -->
 									<h2 id="写在前面">
 										<a
 											href="#写在前面"
@@ -143,477 +152,53 @@
 										></a
 										>写在前面
 									</h2>
-									<p>
-										参考：<a
-											href="https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data"
-											target="_blank"
-											rel="noopener"
-											>https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data</a
-										>
-									</p>
-									<p>训练环境：</p>
-									<ul>
-										<li>Ubuntu 20.04</li>
-										<li>NVIDIA GeForce GTX850M</li>
-									</ul>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">osdev</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/05/25/osdev/osdev-diskread-dev01/"
-								title="OS读取硬盘-dev01"
-								>OS读取硬盘-dev01</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File: OS读取硬盘-dev01</span
-									>
-									<span>2021-05-25</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td>
-									<h2 id="参考">
-										<a
-											href="#参考"
-											class="headerlink"
-											title="参考"
-										></a
-										>参考
-									</h2>
-									<p>《操作系统真相还原》</p>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">Web</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/05/10/Web/AMapSimpleUsage/"
-								title="高德地图API简单使用"
-								>高德地图API简单使用</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File: 高德地图API简单使用</span
-									>
-									<span>2021-05-10</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td>
-									<h2 id="写在前面">
-										<a
-											href="#写在前面"
-											class="headerlink"
-											title="写在前面"
-										></a
-										>写在前面
-									</h2>
-									<p>API 版本：2.0</p>
-									<p>
-										参考：<a
-											href="https://developer.amap.com/api/jsapi-v2/summary"
-											target="_blank"
-											rel="noopener"
-											>高德开放平台</a
-										>
-									</p>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">osdev</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/05/05/osdev/osdev-environment-dev00/"
-								title="设置OS开发环境-dev00"
-								>设置OS开发环境-dev00</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File: 设置OS开发环境-dev00</span
-									>
-									<span>2021-05-05</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td>
-									<h2 id="写在前面">
-										<a
-											href="#写在前面"
-											class="headerlink"
-											title="写在前面"
-										></a
-										>写在前面
-									</h2>
-									<p>
-										开发平台：Gentoo（或其他Linux发行版，个人推荐Ubuntu）<br />实现功能：屏幕输出Hello,
-										World!
-									</p>
-									<p>
-										参考：《一个64位操作系统的设计与实现》
-									</p>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">Microcomputer</a></li>
-
-						<li><a href="#">Raspberry</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/05/02/Microcomputer/Raspberry/Raspberry2Raspberry/"
-								title="Raspberry通过网线连接Raspberry"
-								>Raspberry通过网...</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File:
-										Raspberry通过网线连接Raspberry</span
-									>
-									<span>2021-05-02</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td><p>使用交叉线直接连接</p></td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">Microcomputer</a></li>
-
-						<li><a href="#">Raspberry</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/05/02/Microcomputer/Raspberry/RaspberryArduinoSerialCommunication/"
-								title="Raspberry与Arduino进行串口通信"
-								>Raspberry与Ar...</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File:
-										Raspberry与Arduino进行串口通信</span
-									>
-									<span>2021-05-02</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td></td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">Tool</a></li>
-
-						<li><a href="#">Gitbook</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/02/06/Tool/Gitbook/Gitbook2GitHubPage/"
-								title="Gitbook发布到GitHub静态页面"
-								>Gitbook发布到Gi...</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File: Gitbook发布到GitHub静态页面</span
-									>
-									<span>2021-02-06</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td>
-									<h2 id="使用方法">
-										<a
-											href="#使用方法"
-											class="headerlink"
-											title="使用方法"
-										></a
-										>使用方法
-									</h2>
-									<p>
-										创建两个分支，一个用来开发，一个用来网页展示
-									</p>
-									<p>
-										开发分支为<code>main</code
-										><br />网页展示为<code>book</code>
-									</p>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">Code</a></li>
-
-						<li><a href="#">SDK</a></li>
-
-						<li><a href="#">ArcSoft</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/01/07/Code/SDK/ArcSoft/ArcFaceUsage/"
-								title="虹软人脸识别SDK使用"
-								>虹软人脸识别SDK使用</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File: 虹软人脸识别SDK使用</span
-									>
-									<span>2021-01-07</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td>
-									<p>基于官方说明文档的简单介绍。</p>
-									<p>
-										Windows开发环境配置：Visual Studio
-										2019，虹软SDK Windows 64位 3.0版本。<br />Linux开发环境配置：CLion（使用cmake即可），虹软SDK
-										Linux64 3.0版本。
-									</p>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">Code</a></li>
-
-						<li><a href="#">SDK</a></li>
-
-						<li><a href="#">ArcSoft</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/01/07/Code/SDK/ArcSoft/ArcSoftAPI/"
-								title="虹软人脸识别API"
-								>虹软人脸识别API</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File: 虹软人脸识别API</span
-									>
-									<span>2021-01-07</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td>
-									<p>版本：3.0.3902010101.5</p>
-									<p>
-										参考：<code
-											>ARCSOFT_ARC_FACE_DEVELOPER&#39;S_GUIDE.pdf</code
-										>
-									</p>
-									<p>更为详尽的示例。</p>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</li>
-
-				<li>
-					<ul class="breadcrumbs" id="post-source">
-						<li>
-							<a href="#"><i class="fa fa-file-text"></i></a>
-						</li>
-
-						<li><a href="#">Code</a></li>
-
-						<li><a href="#">SDK</a></li>
-
-						<li><a href="#">ArcSoft</a></li>
-
-						<li id="post-title">
-							<a
-								href="/2021/01/06/Code/SDK/ArcSoft/ArcSoftDataStruct/"
-								title="虹软人脸识别-数据结构"
-								>虹软人脸识别-数据结构</a
-							>
-						</li>
-					</ul>
-
-					<div class="post-table">
-						<table>
-							<tr>
-								<th></th>
-								<th>
-									<span class="table-title"
-										>File: 虹软人脸识别-数据结构</span
-									>
-									<span>2021-01-06</span>
-								</th>
-							</tr>
-							<tr>
-								<td class="table-linenum" id="table-linenum">
-									content
-								</td>
-								<td>
-									<p>版本：3.0.3902010101.5</p>
-									<p>
-										参考：<code
-											>ARCSOFT_ARC_FACE_DEVELOPER&#39;S_GUIDE.pdf</code
-										>
-									</p>
+									<!-- abstract content -->
+									<div v-html="blog.abstract"></div>
 								</td>
 							</tr>
 						</table>
 					</div>
 				</li>
 			</ul>
-
 			<div class="paginator">
-				<span class="page-number current">1</span
-				><a class="page-number" href="/page/2/">2</a
-				><a class="page-number" href="/page/3/">3</a
-				><span class="space">&hellip;</span
-				><a class="page-number" href="/page/10/">10</a
-				><a class="extend next" rel="next" href="/page/2/">Next</a>
+				<a
+					class="extend prev"
+					rel="prev"
+					href="#"
+					@click="prev"
+					v-show="pageState.isPrev"
+					>Prev</a
+				>
+				<!-- Loop over the page numbers array and render the elements -->
+				<template v-for="pageNumber in pageNumbers">
+					<!-- Otherwise, use span -->
+					<span
+						v-if="pageNumber.text === page"
+						class="page-number current"
+						>{{ pageNumber.text }}</span
+					>
+					<!-- If the text is not ... or the current page, just display the text -->
+					<a
+						:key="pageNumber.text"
+						class="page-number"
+						v-else-if="
+							pageNumber.text !== '...' &&
+							pageNumber.text !== page
+						"
+						href="#"
+						@click="toPage(pageNumber.text)"
+						>{{ pageNumber.text }}</a
+					>
+					<span v-else class="space">&hellip;</span>
+				</template>
+				<a
+					class="extend next"
+					rel="next"
+					href="#"
+					@click="next"
+					v-show="pageState.isNext"
+					>Next</a
+				>
 			</div>
 		</div>
 
@@ -627,6 +212,20 @@
 			</ul>
 
 			<ul class="category-list">
+				<li class="category-list-item" v-for="category in categories">
+					<a class="category-list-link" href="/categories/Code/">{{
+						category
+					}}</a>
+					<ul class="category-list-child">
+						<li class="category-list-item">
+							<a
+								class="category-list-link"
+								href="/categories/BigData/Hadoop/"
+								>Hadoop</a
+							>
+						</li>
+					</ul>
+				</li>
 				<li class="category-list-item">
 					<a class="category-list-link" href="/categories/BigData/"
 						>BigData</a
@@ -1003,50 +602,11 @@
 			</ul>
 
 			<div id="list-cloud" class="list-cloud">
-				<a href="/tags/51/" style="font-size: 10px">51</a>
-				<a href="/tags/AMap/" style="font-size: 10px">AMap</a>
-				<a href="/tags/Android/" style="font-size: 10px">Android</a>
-				<a href="/tags/ArcSoft/" style="font-size: 14.29px">ArcSoft</a>
-				<a href="/tags/Arduino/" style="font-size: 12.86px">Arduino</a>
-				<a href="/tags/Assembly/" style="font-size: 10px">Assembly</a>
-				<a href="/tags/CentOS/" style="font-size: 11.43px">CentOS</a>
-				<a href="/tags/Gentoo/" style="font-size: 14.29px">Gentoo</a>
-				<a href="/tags/Hadoop/" style="font-size: 10px">Hadoop</a>
-				<a href="/tags/IDEA/" style="font-size: 10px">IDEA</a>
-				<a href="/tags/Linux/" style="font-size: 11.43px">Linux</a>
-				<a href="/tags/MySQL/" style="font-size: 11.43px">MySQL</a>
-				<a href="/tags/NerualNetwork/" style="font-size: 10px"
-					>NerualNetwork</a
-				>
-				<a href="/tags/NeuralNetwork/" style="font-size: 10px"
-					>NeuralNetwork</a
-				>
-				<a href="/tags/OS/" style="font-size: 11.43px">OS</a>
-				<a href="/tags/OpenCV/" style="font-size: 20px">OpenCV</a>
-				<a href="/tags/OpenGL/" style="font-size: 10px">OpenGL</a>
-				<a href="/tags/Pi/" style="font-size: 18.57px">Pi</a>
-				<a href="/tags/Python/" style="font-size: 12.86px">Python</a>
-				<a href="/tags/QRCode/" style="font-size: 10px">QRCode</a>
-				<a href="/tags/Qt/" style="font-size: 10px">Qt</a>
-				<a href="/tags/Shell/" style="font-size: 15.71px">Shell</a>
-				<a href="/tags/Ubuntu/" style="font-size: 15.71px">Ubuntu</a>
-				<a href="/tags/VSCode/" style="font-size: 10px">VSCode</a>
-				<a href="/tags/Visual-Studio/" style="font-size: 11.43px"
-					>Visual Studio</a
-				>
-				<a href="/tags/WEB/" style="font-size: 14.29px">WEB</a>
-				<a href="/tags/Windows/" style="font-size: 12.86px">Windows</a>
-				<a href="/tags/common/" style="font-size: 11.43px">common</a>
-				<a href="/tags/gitbook/" style="font-size: 12.86px">gitbook</a>
-				<a href="/tags/maven/" style="font-size: 10px">maven</a>
-				<a href="/tags/others/" style="font-size: 11.43px">others</a>
-				<a href="/tags/pyqt5/" style="font-size: 10px">pyqt5</a>
-				<a href="/tags/tmux/" style="font-size: 12.86px">tmux</a>
-				<a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 17.14px"
-					>博客</a
-				>
-				<a href="/tags/%E6%96%87%E7%AB%A0/" style="font-size: 18.57px"
-					>文章</a
+				<router-link
+					v-for="tag in tags"
+					:to="{ name: 'tags', params: { id: tag.id } }"
+					style="font-size: 10px"
+					>{{ tag.name }}</router-link
 				>
 			</div>
 		</div>
@@ -1054,16 +614,122 @@
 </template>
 
 <script setup>
-import useCommonLogic from "/js/page.js";
+import { useCommonLogic } from "/js/page.js";
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { ref, computed, reactive, watch } from "vue";
 
 const store = useStore();
 const user = computed(() => store.getters.user);
+// const blogs = computed(() => store.getters.blogs);
+const totalBlogs = computed(() => store.getters.totalBlogs);
+const tags = computed(() => store.getters.tags);
+const categories = computed(() => store.getters.categories);
+const blogsPerPage = 10;
+const pageState = reactive({
+	isPrev: false,
+	isNext: false,
+});
+const page = ref(Number(localStorage.getItem("page")) || 1);
+const blogs = computed(() => {
+	const startIndex = (page.value - 1) * blogsPerPage;
+	const endIndex = page.value * blogsPerPage;
+	return store.getters.blogs.slice(startIndex, endIndex);
+});
+// Initialize an array to store the page numbers
+var pageNumbers = reactive([]);
 
 const logout = () => {
 	store.dispatch("logout");
 };
 
+const prev = () => {
+	page.value--;
+	localStorage.setItem("page", page.value);
+};
+const next = () => {
+	page.value++;
+	localStorage.setItem("page", page.value);
+};
+
+const toPage = (pageNum) => {
+	page.value = Number(pageNum);
+	localStorage.setItem("page", page.value);
+};
+
 useCommonLogic();
+
+// 截断标题的方法
+const truncateTitle = (title, length) => {
+	if (title.length > length) {
+		return title.substring(0, length) + "...";
+	} else {
+		return title;
+	}
+};
+
+// Define a function to get the page numbers to display
+const getPageNumbers = () => {
+	// Calculate the total pages based on the total blogs and the blogs per page
+	const totalPages = Math.ceil(totalBlogs.value / blogsPerPage);
+	pageNumbers = reactive([]);
+	if (totalPages <= 1) {
+		pageNumbers.push({ text: 1 });
+		return;
+	}
+
+	// If page is 1, add Prev as disabled
+	if (page.value === 1) {
+		pageState.isPrev = false;
+	} else {
+		// Otherwise, add Prev with the previous page link
+		pageState.isPrev = true;
+	}
+
+	if (totalPages <= 8) {
+		for (let i = 1; i <= totalPages; i++) {
+			pageNumbers.push({ text: i });
+		}
+	} else {
+		// If page is less than or equal to 4, add the first 4 pages
+		if (page.value <= 2) {
+			for (let i = 1; i <= 4; i++) {
+				pageNumbers.push({ text: i });
+			}
+		} else {
+			// Otherwise, add the first page and a space
+			pageNumbers.push({ text: 1 });
+			pageNumbers.push({ text: "..." });
+		}
+
+		// If page is between 5 and totalPages - 4, add the current page and the two pages before and after it
+		if (page.value >= 3 && page.value <= totalPages - 3) {
+			for (let i = page.value - 1; i <= page.value + 1; i++) {
+				pageNumbers.push({ text: i });
+			}
+		}
+
+		// If page is greater than or equal to totalPages - 3, add the last 4 pages
+		if (page.value >= totalPages - 2) {
+			for (let i = totalPages - 2; i <= totalPages; i++) {
+				pageNumbers.push({ text: i });
+			}
+		} else {
+			// Otherwise, add a space and the last page
+			pageNumbers.push({ text: "..." });
+			pageNumbers.push({ text: totalPages });
+		}
+	}
+
+	// If page is equal to totalPages, add Next as disabled
+	if (page.value === totalPages) {
+		pageState.isNext = false;
+	} else {
+		// Otherwise, add Next with the next page link
+		pageState.isNext = true;
+	}
+};
+getPageNumbers();
+watch(page, (newValue, oldValue) => {
+	getPageNumbers();
+});
 </script>

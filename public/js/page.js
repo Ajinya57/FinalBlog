@@ -1,7 +1,7 @@
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
 
-export default function useCommonLogic() {
+export function useCommonLogic() {
 	let intervalId;
 	const weeks = ref([
 		"Sunday",
@@ -51,7 +51,7 @@ export default function useCommonLogic() {
 			var path = route.name.slice(0, 4);
 			if (path == "home") {
 				document.getElementById("Home").className += "active";
-			} else if (path == "arch") {
+			} else if (path == "arch" || path == "tags") {
 				document.getElementById("Archives").className += "active";
 			} else if (path == "abou") {
 				document.getElementById("About").className += "active";
@@ -163,4 +163,25 @@ export default function useCommonLogic() {
 		weeks,
 		route,
 	};
+}
+
+export function archCommonLogic() {
+	onMounted(() => {
+		nextTick(() => {
+			$(".win-body").resizable({
+				animate: true,
+				minHeight: 500,
+				minWidth: 1000,
+				alsoResize: ".win-title",
+			});
+			$(".win-title").resizable({
+				animate: true,
+				minHeight: 50,
+			});
+		});
+		nextTick(() => {
+			$(".win").draggable();
+		});
+	});
+	return {};
 }

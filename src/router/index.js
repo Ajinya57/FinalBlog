@@ -12,7 +12,7 @@ const routes = [
 		component: () => import("../views/Login.vue"),
 	},
 	{
-		path: "/blog",
+		path: "/blog/:id",
 		name: "blog",
 		component: () => import("../views/Blog.vue"),
 	},
@@ -25,6 +25,16 @@ const routes = [
 		path: "/about",
 		name: "about",
 		component: () => import("../views/About.vue"),
+	},
+	{
+		path: "/tags/:id",
+		name: "tags",
+		component: () => import("../views/Tags.vue"),
+	},
+	{
+		path: "/categories",
+		name: "categories",
+		component: () => import("../views/Categories.vue"),
 	},
 	{
 		path: "/",

@@ -1,253 +1,273 @@
 $(() => {
-  // gitee usage
-  $(() => {
-    if($(location).attr("pathname").slice(0, 5) == "/blog"){
-      var root_path = "/blog";
-      $("body").css({
-        "cursor":"url(\"" + root_path + "/cursor/normal.cur\"), auto",
-        "background-image":"url(\"" + root_path + "/background.jpg" + "\")"
-      });
-      $("a").hover(() => {
-        $("a").css("cursor", "url(\"" + root_path + "/cursor/link.cur\"), auto")
-      })
-    }
-  })
+	// gitee usage
+	$(() => {
+		if ($(location).attr("pathname").slice(0, 5) == "/blog") {
+			var root_path = "/blog";
+			$("body").css({
+				cursor: 'url("' + root_path + '/cursor/normal.cur"), auto',
+				"background-image":
+					'url("' + root_path + "/background.jpg" + '")',
+			});
+			$("a").hover(() => {
+				$("a").css(
+					"cursor",
+					'url("' + root_path + '/cursor/link.cur"), auto'
+				);
+			});
+		}
+	});
 
-  // resizable
-  $(() => {
-    $(".win-body").resizable({
-      animate: true,
-      minHeight: 500,
-      minWidth: 1000,
-      alsoResize: ".win-title"
-    })
-    $(".win-title").resizable({
-      animate: true,
-      minHeight: 50
-    })
-  })
-  // use fancybox to show pictures
-  $("img").each(function (index) {
-    var title = ' data-caption="' + $(this).attr("alt") + '"';
-    var source = ' href="' + $(this).attr("src") + '"';
-    $(this).wrap("<a data-fancybox" + title + source + "></a>");
-  });
+	// resizable
+	$(() => {
+		$(".win-body").resizable({
+			animate: true,
+			minHeight: 500,
+			minWidth: 1000,
+			alsoResize: ".win-title",
+		});
+		$(".win-title").resizable({
+			animate: true,
+			minHeight: 50,
+		});
+	});
+	// use fancybox to show pictures
+	$("img").each(function (index) {
+		var title = ' data-caption="' + $(this).attr("alt") + '"';
+		var source = ' href="' + $(this).attr("src") + '"';
+		$(this).wrap("<a data-fancybox" + title + source + "></a>");
+	});
 
-  // dragable
-  $(() => {
-    $(".draggable-toc").draggable();
-    $(".draggable").draggable();
-    $(".win").draggable();
-  });
+	// dragable
+	$(() => {
+		$(".draggable-toc").draggable();
+		$(".draggable").draggable();
+		$(".win").draggable();
+	});
 
-  // scroll to top
-  $("#scroll2top").click((e) => {
-    $(".post-content").animate({ scrollTop: $("#top").offset().top }, 500);
-  });
+	// scroll to top
+	$("#scroll2top").click((e) => {
+		$(".post-content").animate({ scrollTop: $("#top").offset().top }, 500);
+	});
 
-  // toc style
-  if (document.getElementById("post-content")) {
-    var _h1_list = document.getElementsByTagName("h1");
-    var _h2_list = document.getElementsByTagName("h2");
-    var _h3_list = document.getElementsByTagName("h3");
-    var _h4_list = document.getElementsByTagName("h4");
-    var _h5_list = document.getElementsByTagName("h5");
-    var _h6_list = document.getElementsByTagName("h6");
-    var _h_list = Array.from(_h1_list)
-      .concat(Array.from(_h2_list))
-      .concat(Array.from(_h3_list))
-      .concat(Array.from(_h4_list))
-      .concat(Array.from(_h5_list))
-      .concat(Array.from(_h6_list));
-    var h_list = _h_list.sort(function (a, b) {
-      return a.offsetTop - b.offsetTop;
-    });
-    var target = null;
-    $("#post-content").scroll(() => {
-      page_height = document.getElementById("post-content").scrollHeight;
-      _height = document.getElementById("post-content").clientHeight;
-      var height = page_height - _height;
+	// toc style
+	if (document.getElementById("post-content")) {
+		var _h1_list = document.getElementsByTagName("h1");
+		var _h2_list = document.getElementsByTagName("h2");
+		var _h3_list = document.getElementsByTagName("h3");
+		var _h4_list = document.getElementsByTagName("h4");
+		var _h5_list = document.getElementsByTagName("h5");
+		var _h6_list = document.getElementsByTagName("h6");
+		var _h_list = Array.from(_h1_list)
+			.concat(Array.from(_h2_list))
+			.concat(Array.from(_h3_list))
+			.concat(Array.from(_h4_list))
+			.concat(Array.from(_h5_list))
+			.concat(Array.from(_h6_list));
+		var h_list = _h_list.sort(function (a, b) {
+			return a.offsetTop - b.offsetTop;
+		});
+		var target = null;
+		$("#post-content").scroll(() => {
+			page_height = document.getElementById("post-content").scrollHeight;
+			_height = document.getElementById("post-content").clientHeight;
+			var height = page_height - _height;
 
-      // progress
-      var temp_height = $("#post-content").scrollTop();
-      var scrolled = (temp_height / height) * 100;
-      document.getElementById("bar").style.width = scrolled + "%";
-      $("div.draggable-toc p span").text(scrolled.toFixed(2) + "%");
+			// progress
+			var temp_height = $("#post-content").scrollTop();
+			var scrolled = (temp_height / height) * 100;
+			document.getElementById("bar").style.width = scrolled + "%";
+			$("div.draggable-toc p span").text(scrolled.toFixed(2) + "%");
 
-      // highlight
-      len = h_list.length / 2;
-      for (var i = 0; i < len; ++i) {
-        if (temp_height - h_list[i].offsetTop <= 0) {
-          target = h_list[i].id;
-          break;
-        }
-        if (temp_height - h_list[h_list.length - 1 - i].offsetTop >= 0) {
-          target = h_list[h_list.length - 1 - i].id;
-          break;
-        }
-      }
-      $(".toc a span").removeClass("active");
-      $('.toc a[href="#' + target + '"] span').addClass("active");
-    });
-  }
+			// highlight
+			len = h_list.length / 2;
+			for (var i = 0; i < len; ++i) {
+				if (temp_height - h_list[i].offsetTop <= 0) {
+					target = h_list[i].id;
+					break;
+				}
+				if (
+					temp_height - h_list[h_list.length - 1 - i].offsetTop >=
+					0
+				) {
+					target = h_list[h_list.length - 1 - i].id;
+					break;
+				}
+			}
+			$(".toc a span").removeClass("active");
+			$('.toc a[href="#' + target + '"] span').addClass("active");
+		});
+	}
 
-  // nav-menu highlight
-  $(() => {
-    var title = document.title;
-    if (title[0] == "[" && title[title.length - 1] == "]") {
-      document.getElementById("Home").className += "active";
-    } else if (title.search("Archives") == 0) {
-      document.getElementById("Archives").className += "active";
-    } else if (title.search("about") == 0) {
-      document.getElementById("About").className += "active";
-    }
-  });
+	// nav-menu highlight
+	$(() => {
+		var title = document.title;
+		if (title[0] == "[" && title[title.length - 1] == "]") {
+			document.getElementById("Home").className += "active";
+		} else if (title.search("Archives") == 0) {
+			document.getElementById("Archives").className += "active";
+		} else if (title.search("about") == 0) {
+			document.getElementById("About").className += "active";
+		}
+	});
 
-  // header system info
-  $(() => {
-    var agent = navigator.userAgent;
-    var os;
-    if (agent.indexOf("Linux") >= 0) {
-      os = '<i class="fa fa-linux" aria-hidden="true"></i>';
-    } else if (agent.indexOf("Windows") >= 0) {
-      os = '<i class="fa fa-windows" aria-hidden="true"></i>';
-    } else if (agent.indexOf("Android") >= 0) {
-      os = '<i class="fa fa-android" aria-hidden="true"></i';
-    } else if (agent.indexOf("Mac")) {
-      os = '<i class="fa fa-apple" aria-hidden="true"></i>';
-    } else {
-      os = navigator.platform;
-    }
+	// header system info
+	$(() => {
+		var agent = navigator.userAgent;
+		var os;
+		if (agent.indexOf("Linux") >= 0) {
+			os = '<i class="fa fa-linux" aria-hidden="true"></i>';
+		} else if (agent.indexOf("Windows") >= 0) {
+			os = '<i class="fa fa-windows" aria-hidden="true"></i>';
+		} else if (agent.indexOf("Android") >= 0) {
+			os = '<i class="fa fa-android" aria-hidden="true"></i';
+		} else if (agent.indexOf("Mac")) {
+			os = '<i class="fa fa-apple" aria-hidden="true"></i>';
+		} else {
+			os = navigator.platform;
+		}
 
-    var web;
-    if (agent.indexOf("Firefox") >= 0) {
-      web = '<i class="fa fa-firefox"></i>';
-    } else if (agent.indexOf("Opera") >= 0) {
-      web = '<i class="fa fa-opera" aria-hidden="true"></i>';
-    } else if (agent.indexOf("Chrome") >= 0) {
-      web = '<i class="fa fa-chrome" aria-hidden="true"></i>';
-    } else if (agent.indexOf("Edge") >= 0) {
-      web = '<i class="fa fa-edge" aria-hidden="true"></i>';
-    } else if (agent.indexOf("Safari")) {
-      web = '<i class="fa fa-safari" aria-hidden="true"></i>';
-    } else {
-      web = '<i class="fa fa-internet-explorer" aria-hidden="true"></i>';
-    }
+		var web;
+		if (agent.indexOf("Firefox") >= 0) {
+			web = '<i class="fa fa-firefox"></i>';
+		} else if (agent.indexOf("Opera") >= 0) {
+			web = '<i class="fa fa-opera" aria-hidden="true"></i>';
+		} else if (agent.indexOf("Chrome") >= 0) {
+			web = '<i class="fa fa-chrome" aria-hidden="true"></i>';
+		} else if (agent.indexOf("Edge") >= 0) {
+			web = '<i class="fa fa-edge" aria-hidden="true"></i>';
+		} else if (agent.indexOf("Safari")) {
+			web = '<i class="fa fa-safari" aria-hidden="true"></i>';
+		} else {
+			web = '<i class="fa fa-internet-explorer" aria-hidden="true"></i>';
+		}
 
-    var screen_info =
-      '<i class="fa fa-tv"></i>: ' + screen.width + " x " + screen.height;
+		var screen_info =
+			'<i class="fa fa-tv"></i>: ' + screen.width + " x " + screen.height;
 
-    $("#nav-system").html(
-      "web: " + web + " | " + "OS: " + os + " | " + screen_info
-    );
-  });
+		$("#nav-system").html(
+			"web: " + web + " | " + "OS: " + os + " | " + screen_info
+		);
+	});
 
-  // header time
-  $(() => {
-    setInterval(() => {
-      var myDate = new Date();
-      var year = myDate.getFullYear(); // year
-      var mon = myDate.getMonth() + 1; // month
-      var date = myDate.getDate(); // date
-      _week = myDate.getDay();
-      var weeks = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ];
-      var h = myDate.getHours(); // hours(0-23)
-      var m = myDate.getMinutes(); // minutes(0-59)
-      var s = myDate.getSeconds(); // seconds
+	// header time
+	$(() => {
+		setInterval(() => {
+			var myDate = new Date();
+			var year = myDate.getFullYear(); // year
+			var mon = myDate.getMonth() + 1; // month
+			var date = myDate.getDate(); // date
+			_week = myDate.getDay();
+			var weeks = [
+				"Sunday",
+				"Monday",
+				"Tuesday",
+				"Wednesday",
+				"Thursday",
+				"Friday",
+				"Saturday",
+			];
+			var h = myDate.getHours(); // hours(0-23)
+			var m = myDate.getMinutes(); // minutes(0-59)
+			var s = myDate.getSeconds(); // seconds
 
-      $("#date").html(
-        year +
-          "-" +
-          mon +
-          "-" +
-          date +
-          " " +
-          weeks[_week] +
-          " " +
-          h +
-          ":" +
-          m +
-          ":" +
-          s
-      );
-    }, 1000);
-  });
+			$("#date").html(
+				year +
+					"-" +
+					mon +
+					"-" +
+					date +
+					" " +
+					weeks[_week] +
+					" " +
+					h +
+					":" +
+					m +
+					":" +
+					s
+			);
+		}, 1000);
+	});
 
-  // ascii style
-  $(() => {
-    $(".category-list").addClass("ascii");
-    $(".tag-list").addClass("ascii");
-  });
+	// ascii style
+	$(() => {
+		$(".category-list").addClass("ascii");
+		$(".tag-list").addClass("ascii");
+	});
 
-  // tags style
-  $(() => {
-    $("#list-cloud a").wrap('<div class="ffolder small pink"></div>');
-    $("#list-cloud a").width("50px");
-    $("#list-cloud a").css({
-      "font-size": "25px",
-      color: "black",
-      "text-overflow": "ellipsis",
-      overflow: "hidden",
-      display: "inline-block",
-      "white-space": "nowrap",
-    });
+	// tags style
+	$(() => {
+		$("#list-cloud a").wrap('<div class="ffolder small pink"></div>');
+		$("#list-cloud a").width("50px");
+		$("#list-cloud a").css({
+			"font-size": "25px",
+			color: "black",
+			"text-overflow": "ellipsis",
+			overflow: "hidden",
+			display: "inline-block",
+			"white-space": "nowrap",
+		});
 
-    $("#list-cloud a").each(function () {
-      $(this).attr("title", $(this).text());
-    });
-  });
+		$("#list-cloud a").each(function () {
+			$(this).attr("title", $(this).text());
+		});
+	});
 
-  // header access
-  $("#nav-access").click(() => {
-    $(".fa-angle-down").toggle();
-    $("#dropdown-content").toggle();
-  });
+	// header access
+	$("#nav-access").click(() => {
+		$(".fa-angle-down").toggle();
+		$("#dropdown-content").toggle();
+	});
 
-  // comment tab page
-  $("#comment-tabs").tabs();
+	// comment tab page
+	$("#comment-tabs").tabs();
 
-  // code copy function
-  $(() => {
-    $(".hljs").prepend(
-      "<div class='hljs-prompt'><i class='fa fa-files-o' aria-hidden='true'>copy</i></div>"
-    );
-    $(".hljs").hover(
-      function () {
-        _this = this;
-        $(this).children(".hljs-prompt").show();
-        $(this)
-          .children(".hljs-prompt")
-          .click(function () {
-            // copy prompt
-            var prompt = document.createElement("span");
-            prompt.className = "Tips";
-            prompt.innerHTML = "alerady copy!";
-            document.body.appendChild(prompt);
-            setTimeout(function () {
-              document.body.removeChild(prompt);
-            }, 500);
+	// code copy function
+	$(() => {
+		$(".hljs").prepend(
+			"<div class='hljs-prompt'><i class='fa fa-files-o' aria-hidden='true'>copy</i></div>"
+		);
+		$(".hljs").hover(
+			function () {
+				_this = this;
+				$(this).children(".hljs-prompt").show();
+				$(this)
+					.children(".hljs-prompt")
+					.click(function () {
+						// copy prompt
+						var prompt = document.createElement("span");
+						prompt.className = "Tips";
+						prompt.innerHTML = "alerady copy!";
+						document.body.appendChild(prompt);
+						setTimeout(function () {
+							document.body.removeChild(prompt);
+						}, 500);
 
-            var text = $(_this).text();
-            text = text.substring(4, text.length);
-            navigator.clipboard.writeText(text).then(
-              function () {},
-              function () {
-                alert("copy failed");
-              }
-            );
-          });
-      },
-      function () {
-        $(this).children(".hljs-prompt").hide();
-      }
-    );
-  });
+						var text = $(_this).text();
+						text = text.substring(4, text.length);
+						navigator.clipboard.writeText(text).then(
+							function () {},
+							function () {
+								alert("copy failed");
+							}
+						);
+					});
+			},
+			function () {
+				$(this).children(".hljs-prompt").hide();
+			}
+		);
+	});
 });
+
+// 这段代码是用于实现复制功能的。它的工作原理如下：
+
+// 1. 当页面加载完成后，会在所有class为`hljs`的元素前添加一个带有复制图标的`div`元素。
+
+// 2. 当鼠标悬停在`hljs`元素上时，会显示复制图标。当鼠标移出`hljs`元素时，复制图标会隐藏。
+
+// 3. 当点击复制图标时，会执行以下操作：
+//    - 创建一个新的`span`元素，设置其类名为`Tips`，并设置其内容为`alerady copy!`，然后将其添加到页面的body中。
+//    - 500毫秒后，将`Tips`元素从页面中移除。
+//    - 获取`hljs`元素的文本内容，去掉前4个字符，然后将剩余的文本复制到剪贴板中。如果复制失败，会弹出一个警告框。
+
+// 这段代码主要用于实现代码块的复制功能，用户可以通过点击复制图标将代码块的内容复制到剪贴板中。如果你有其他问题或需要进一步的帮助，欢迎随时向我提问。😊
