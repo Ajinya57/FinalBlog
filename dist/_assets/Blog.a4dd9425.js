@@ -1,1 +1,0 @@
-import{p as a,a as s,q as o,B as e}from"./index.150b79b5.js";var l={__name:"Blog",setup(l){const t=a().params.id,n=s([]);return console.log(t),o((async()=>{const a=await e.get("/api/axios.php");n.value=a.data,console.log(n.value)})),(a,s)=>null}};export{l as default};

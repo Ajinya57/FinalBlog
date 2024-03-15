@@ -51,7 +51,7 @@ export function useCommonLogic() {
 			var path = route.name.slice(0, 4);
 			if (path == "home") {
 				document.getElementById("Home").className += "active";
-			} else if (path == "arch" || path == "tags") {
+			} else if (path == "arch" || path == "tags" || path == "year") {
 				document.getElementById("Archives").className += "active";
 			} else if (path == "abou") {
 				document.getElementById("About").className += "active";
@@ -181,6 +181,130 @@ export function archCommonLogic() {
 		});
 		nextTick(() => {
 			$(".win").draggable();
+		});
+	});
+	return {};
+}
+
+export function blogCommonLogic() {
+	onMounted(() => {
+		nextTick(() => {
+			// use fancybox to show pictures
+			$("img").each(function (index) {
+				var title = ' data-caption="' + $(this).attr("alt") + '"';
+				var source = ' href="' + $(this).attr("src") + '"';
+				$(this).wrap("<a data-fancybox" + title + source + "></a>");
+			});
+		});
+		nextTick(() => {
+			$(".draggable-toc").draggable();
+			$(".draggable").draggable();
+		});
+		nextTick(() => {
+			// scroll to top
+			$("#scroll2top").click((e) => {
+				$(".post-content").animate(
+					{ scrollTop: $("#top").offset().top },
+					500
+				);
+			});
+
+			// toc style
+			if (document.getElementById("post-content")) {
+				var _h1_list = document.getElementsByTagName("h1");
+				var _h2_list = document.getElementsByTagName("h2");
+				var _h3_list = document.getElementsByTagName("h3");
+				var _h4_list = document.getElementsByTagName("h4");
+				var _h5_list = document.getElementsByTagName("h5");
+				var _h6_list = document.getElementsByTagName("h6");
+				var _h_list = Array.from(_h1_list)
+					.concat(Array.from(_h2_list))
+					.concat(Array.from(_h3_list))
+					.concat(Array.from(_h4_list))
+					.concat(Array.from(_h5_list))
+					.concat(Array.from(_h6_list));
+				var h_list = _h_list.sort(function (a, b) {
+					return a.offsetTop - b.offsetTop;
+				});
+				var target = null;
+				$("#post-content").scroll(() => {
+					var page_height =
+						document.getElementById("post-content").scrollHeight;
+					var _height =
+						document.getElementById("post-content").clientHeight;
+					var height = page_height - _height;
+
+					// progress
+					var temp_height = $("#post-content").scrollTop();
+					var scrolled = (temp_height / height) * 100;
+					document.getElementById("bar").style.width = scrolled + "%";
+					$("div.draggable-toc p span").text(
+						scrolled.toFixed(2) + "%"
+					);
+
+					// highlight
+					var len = h_list.length / 2;
+					for (var i = 0; i < len; ++i) {
+						if (temp_height - h_list[i].offsetTop <= 0) {
+							target = h_list[i].id;
+							break;
+						}
+						if (
+							temp_height -
+								h_list[h_list.length - 1 - i].offsetTop >=
+							0
+						) {
+							target = h_list[h_list.length - 1 - i].id;
+							break;
+						}
+					}
+					$(".toc a span").removeClass("active");
+					$('.toc a[href="#' + target + '"] span').addClass("active");
+				});
+			}
+		});
+		nextTick(() => {
+			// comment tab page
+			$("#comment-tabs").tabs();
+		});
+		nextTick(() => {
+			// code copy function
+			$(() => {
+				hljs.highlightAll();
+				$(".hljs").prepend(
+					"<div class='hljs-prompt'><i class='fa fa-files-o' aria-hidden='true'>copy</i></div>"
+				);
+				$(".hljs").hover(
+					function () {
+						var _this = this;
+						$(this).children(".hljs-prompt").show();
+						$(this)
+							.children(".hljs-prompt")
+							.click(function () {
+								// copy prompt
+								var prompt = document.createElement("span");
+								prompt.className = "Tips";
+								prompt.innerHTML = "alerady copy!";
+								document.body.appendChild(prompt);
+								setTimeout(function () {
+									document.body.removeChild(prompt);
+								}, 500);
+
+								var text = $(_this).text();
+								text = text.substring(4, text.length);
+								navigator.clipboard.writeText(text).then(
+									function () {},
+									function () {
+										alert("copy failed");
+									}
+								);
+							});
+					},
+					function () {
+						$(this).children(".hljs-prompt").hide();
+					}
+				);
+			});
 		});
 	});
 	return {};
